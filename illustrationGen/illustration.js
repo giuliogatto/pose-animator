@@ -72,6 +72,7 @@ export class PoseIllustration {
         let scope = this.scope;
         // Add paths
         this.skinnedPaths.forEach(skinnedPath => {
+            //console.log('skinnedPath',skinnedPath)
             // Do not render paths with low confidence scores.
             if (!skinnedPath.confidenceScore || skinnedPath.confidenceScore < MIN_CONFIDENCE_PATH_SCORE) {
                 return;
@@ -143,6 +144,7 @@ export class PoseIllustration {
     }
 
     bindSkeleton(skeleton, skeletonScope) {
+        console.log('IMPORTANTE FUNZIONE PER ASSOCIARE I PATHS',skeleton,skeletonScope)
         let items = skeletonScope.project.getItems({ recursive: true });
         items = items.filter(item => item.parent && item.parent.name && item.parent.name.startsWith('illustration'));
         this.skeleton = skeleton;

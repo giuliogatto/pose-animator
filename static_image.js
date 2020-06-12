@@ -97,6 +97,9 @@ let sourceImage;
  * Only the pose's keypoints that pass a minPartConfidence are drawn.
  */
 function drawResults(image, canvas, faceDetection, poses) {
+  // funzione che disegna i punti e linee nella foto a SX
+  // ININFLUENTE
+  console.log("drawResults",image, canvas, faceDetection, poses);
   renderImageToCanvas(image, [VIDEO_WIDTH, VIDEO_HEIGHT], canvas);
   const ctx = canvas.getContext('2d');
   poses.forEach((pose) => {
@@ -146,6 +149,7 @@ function getIllustrationCanvas() {
  */
 function drawDetectionResults() {
   const canvas = multiPersonCanvas();
+  // FUNZIONE CHE DISEGNA I RISULTATI A SINISTRA
   drawResults(sourceImage, canvas, faceDetection, predictedPoses);
   if (!predictedPoses || !predictedPoses.length || !illustration) {
     return;
@@ -154,13 +158,16 @@ function drawDetectionResults() {
   skeleton.reset();
   canvasScope.project.clear();
 
+  // CODICE CHE DISEGNA ANIMAZIONE A DESTRA
+  console.log('illustration',illustration)
+
   if (faceDetection && faceDetection.length > 0) {
     let face = Skeleton.toFaceFrame(faceDetection[0]);
     illustration.updateSkeleton(predictedPoses[0], face);
   } else {
     illustration.updateSkeleton(predictedPoses[0], null);
   }
-  illustration.draw(canvasScope, sourceImage.width, sourceImage.height);
+  illustration.draw();
 
   if (guiState.showCurves) {
     illustration.debugDraw(canvasScope);
@@ -256,6 +263,7 @@ export async function bindPage() {
 
   setupGui(posenet);
   setStatusText('Loading SVG file...');
+  console.log('Object.values(avatarSvgs)',Object.values(avatarSvgs))
   await loadSVG(Object.values(avatarSvgs)[0]);
 }
 

@@ -210,6 +210,14 @@ function detectPoseInRealTime(video) {
     if (poses.length >= 1 && illustration) {
       Skeleton.flipPose(poses[0]);
 
+      //console.log('poses at',Date.now(),poses)
+      if(isRecording){
+        posesArray.push({'poses':poses[0],'time':Date.now()})
+        //console.log('posesArray.length',posesArray.length)
+      }
+      // le 2 funzioni che fanno aggiornamento
+      // updateSkeleton aggiorna la struttura sottostante delle ossa)
+      // draw aggiorna l'immagine SVG in base allo scheletro
       if (faceDetection && faceDetection.length > 0) {
         let face = Skeleton.toFaceFrame(faceDetection[0]);
         illustration.updateSkeleton(poses[0], face);
@@ -223,6 +231,7 @@ function detectPoseInRealTime(video) {
       }
     }
 
+    // questa parte riposiziona e riscala l'animazione nel canvas
     canvasScope.project.activeLayer.scale(
       canvasWidth / videoWidth, 
       canvasHeight / videoHeight, 
@@ -306,3 +315,5 @@ async function parseSVG(target) {
 }
     
 bindPage();
+window.posesArray = [];
+window.isRecording = false;
